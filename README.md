@@ -72,7 +72,10 @@ serial-verified SATA disk, raw read integrity matching Linux `mpt3sas` hashes,
 a request-size/queue-depth read matrix over both DMA paths, bounded writes
 verified and restored, filesystem-triggered SYNCHRONIZE CACHE, TMF
 ABORT/LUN/TARGET escalation and IOC-reset recovery, sleep/wake, shutdown,
-maintenance mode and the management refusal matrix, and a sustained read soak.
+maintenance mode and the management refusal matrix, a sustained read soak, and
+a physical hotplug cycle: removal retires the target with a TARGET_RESET and a
+bounded IOC re-init, leaves a clean empty topology, and reinsertion re-probes
+the same serial into a republished medium with unchanged read hashes.
 Still unverified on MPS: SAS SSP, expanders, enclosures, IR arrays, multi-LUN,
 EEDP/TLR, hotplug, and UNMAP/FUA traffic (no userspace or filesystem caller).
 Evidence reports live in `_scratch/deployment-20261114*/`.
