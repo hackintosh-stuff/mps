@@ -549,15 +549,21 @@ MPSController::readSasIOUnitPage0(void)
     bool finished = false;
     const UInt32 token = ++fScanSerial;
     UInt32 bound = fMaxDeviceHandle != 0 ? fMaxDeviceHandle : 0xFFFE;
+    UInt32 pages = 0;
+    UInt16 lastStatus = 0xFFFF;
     for (UInt32 n = 0; n <= bound; n++) {
         UInt16 status = 0xFFFF;
         if (!readExtConfigPage(MPI2_CONFIG_EXTPAGETYPE_SAS_DEVICE,
                                MPI2_SAS_DEVICE_PGAD_FORM_GET_NEXT_HANDLE | cursor,
                                page, sizeof(page), &actual, &status)) {
+            lastStatus = status;
             if (status == MPI2_IOCSTATUS_CONFIG_INVALID_PAGE &&
                 !fProtocolRecoveryPending) { finished = true; break; }
+            MPS_DEBUG_PROP("MPSEnumAbortStatus", (unsigned long long)status, 16);
             return false;
         }
+        lastStatus = status;
+        pages++;
         if (actual < 0x22) return false;
         UInt16 handle = mpsReadLe16(page + 0x18);
         if (handle == 0 || handle == 0xFFFF || handle > bound ||
@@ -569,22 +575,36 @@ MPSController::readSasIOUnitPage0(void)
         /* SES/vSEP enclosure processors behind an expander are SSP end
          * devices too, but not block disks. Counting them as standalone
          * targets makes the single-target guard refuse the real disk. */
-        if ((info & 7) == MPI2_SAS_DEVICE_INFO_END_DEVICE &&
+        const bool diskLike =
+            (info & 7) == MPI2_SAS_DEVICE_INFO_END_DEVICE &&
             (info & (MPI2_SAS_DEVICE_INFO_SATA_DEVICE | MPI2_SAS_DEVICE_INFO_STP_TARGET |
                      MPI2_SAS_DEVICE_INFO_SSP_TARGET)) != 0 &&
             (info & (MPI2_SAS_DEVICE_INFO_ATAPI_DEVICE | MPI2_SAS_DEVICE_INFO_SEP)) == 0 &&
-            (flags & MPI2_SAS_DEVICE0_FLAGS_DEVICE_PRESENT) != 0) disks++;
-        if ((info & 7) != MPI2_SAS_DEVICE_INFO_END_DEVICE ||
-            (info & (MPI2_SAS_DEVICE_INFO_SATA_DEVICE | MPI2_SAS_DEVICE_INFO_STP_TARGET |
-                     MPI2_SAS_DEVICE_INFO_SSP_TARGET)) == 0 ||
-            page[0x17] != 0 ||
-            (flags & MPI2_SAS_DEVICE0_FLAGS_DEVICE_PRESENT) == 0 ||
-            (flags & (MPI2_SAS_DEVICE0_FLAGS_UNSUPPORTED_DEVICE |
-                      MPI2_SAS_DEVICE0_FLAGS_UNAUTHORIZED_DEVICE)) != 0) continue;
+            (flags & MPI2_SAS_DEVICE0_FLAGS_DEVICE_PRESENT) != 0;
+        if (diskLike) {
+            disks++;
+            MPS_DEBUG_PROP("MPSDiskHandle", (unsigned long long)handle, 16);
+            MPS_DEBUG_PROP("MPSDiskAccessStatus", (unsigned long long)page[0x17], 8);
+        }
+        UInt8 skipReason = 0;
+        if ((info & 7) != MPI2_SAS_DEVICE_INFO_END_DEVICE) skipReason = 1;
+        else if ((info & (MPI2_SAS_DEVICE_INFO_SATA_DEVICE | MPI2_SAS_DEVICE_INFO_STP_TARGET |
+                          MPI2_SAS_DEVICE_INFO_SSP_TARGET)) == 0) skipReason = 2;
+        else if (page[0x17] != MPI2_SAS_DEVICE0_ASTATUS_NO_ERRORS &&
+                 page[0x17] != MPI2_SAS_DEVICE0_ASTATUS_SATA_NEEDS_INITIALIZATION)
+            skipReason = 3;
+        else if ((flags & MPI2_SAS_DEVICE0_FLAGS_DEVICE_PRESENT) == 0) skipReason = 4;
+        else if ((flags & (MPI2_SAS_DEVICE0_FLAGS_UNSUPPORTED_DEVICE |
+                           MPI2_SAS_DEVICE0_FLAGS_UNAUTHORIZED_DEVICE)) != 0) skipReason = 5;
+        if (skipReason != 0) {
+            if (diskLike) MPS_DEBUG_PROP("MPSDiskSkipReason", (unsigned long long)skipReason, 8);
+            continue;
+        }
         bool raid = false;
         if (!readRaidMembership(handle, &raid)) return false;
         if (fWarpDrive ? fWarpDriveHidePhysical : raid) {
             MPS_DEBUG_PROP("MPSRaidExcludedHandle", (unsigned long long)handle, 16);
+            if (diskLike) MPS_DEBUG_PROP("MPSDiskSkipReason", 6ULL, 8);
             continue;
         }
         const UInt64 address = mpsReadLe64(page + 0x0C);
@@ -620,6 +640,9 @@ MPSController::readSasIOUnitPage0(void)
         if (fTargets[i].handle != 0) fTargetCount++;
 
     MPS_DEBUG_PROP("MPSStandaloneTargetCount", (unsigned long long)candidates, 32);
+    MPS_DEBUG_PROP("MPSEnumPages", (unsigned long long)pages, 32);
+    MPS_DEBUG_PROP("MPSEnumLastStatus", (unsigned long long)lastStatus, 16);
+    MPS_DEBUG_PROP("MPSEnumDisks", (unsigned long long)disks, 32);
     MPS_DEBUG_PROP("MPSTargetCount", (unsigned long long)fTargetCount, 32);
     publishTargetProperties();
     /* Every eligible target stays in the table; publication is per target.

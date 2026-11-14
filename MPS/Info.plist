@@ -34,6 +34,8 @@
 			<string>MPSController</string>
 			<key>IOPCIPrimaryMatch</key>
 			<string>0x00701000 0x00721000 0x00741000 0x00761000 0x00771000 0x00641000 0x00651000 0x00801000 0x00811000 0x00821000 0x00831000 0x00841000 0x00851000 0x00861000 0x00871000 0x006e1000 0x007e1000</string>
+			<key>IOProbeScore</key>
+			<integer>1000</integer>
 			<key>IOProviderClass</key>
 			<string>IOPCIDevice</string>
 		</dict>

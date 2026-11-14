@@ -3338,8 +3338,26 @@ MPSController::start(IOService *provider)
 
     fDmaMapper = IOMapper::copyMapperForDevice(fPCIDevice);
     MPS_DEBUG_PROP("MPSDeviceMapperPresent", fDmaMapper != NULL);
-    if (!pci->setMemoryEnable(true) || !pci->setBusMasterEnable(true)) {
-        MPS_DEBUG_LOG("MPS: failed to enable memory decode / bus master\n");
+    /* The helper return values are not a readiness proof on this controller:
+     * they report failure during early enumeration even when the command
+     * register ends up programmed, which aborted every start() attempt. Judge
+     * the result from the command register instead, with one bounded retry. */
+    bool memEnabled = pci->setMemoryEnable(true);
+    bool busEnabled = pci->setBusMasterEnable(true);
+    UInt16 command = pci->configRead16(kIOPCIConfigCommand);
+    if (!memEnabled || !busEnabled) {
+        IOSleep(2);
+        memEnabled = pci->setMemoryEnable(true);
+        busEnabled = pci->setBusMasterEnable(true);
+        command = pci->configRead16(kIOPCIConfigCommand);
+    }
+    MPS_DEBUG_PROP("MPSSetMemoryEnableResult", memEnabled);
+    MPS_DEBUG_PROP("MPSSetBusMasterResult", busEnabled);
+    MPS_DEBUG_PROP("MPSPCICommandRegister", (unsigned long long)command, 16);
+    if ((command & (kIOPCICommandMemorySpace | kIOPCICommandBusMaster)) !=
+        (kIOPCICommandMemorySpace | kIOPCICommandBusMaster)) {
+        MPS_DEBUG_LOG("MPS: command register lacks memory decode/bus master (0x%04x)\n",
+                      (unsigned)command);
         super::stop(provider);
         return false;
     }

@@ -58,6 +58,29 @@ checks. Uncertain writes are not replayed. An unproved DMA stop retains direct
 client mappings and callback responsibility rather than exposing freed pages
 to DMA; an unresolved operation in that state is a failure requiring recovery.
 
+## PCI attach and target admission
+
+The personality is a single `IOPCIPrimaryMatch` entry over the FreeBSD ID table
+with a nonzero `IOProbeScore`. A personality with no probe score is not offered
+the device at all while it is the only candidate: `probe()` never runs and the
+controller stays unclaimed even though the kext is loaded and its classes are
+registered. Keep the score in the plist.
+
+`start()` enables memory decode and bus master, but treats
+`setMemoryEnable()`/`setBusMasterEnable()` results as advisory: during early
+enumeration they report failure while the command register ends up programmed
+(observed `0x0006`). Acceptance is judged from
+`configRead16(kIOPCIConfigCommand)` after one 2 ms retry, and a genuinely
+unprogrammed register still fails the start.
+
+Target admission walks SAS Device Page0 with `GET_NEXT_HANDLE`. A page whose
+`AccessStatus` is `SATA_NEEDS_INITIALIZATION` (0x04) is admissible, matching
+`mpt3sas _scsih_get_sas_device_status`; rejecting it hides a healthy
+direct-attached SATA disk. Other access statuses and the unsupported/unauthorized
+device flags still skip a page. `MPSEnumPages`, `MPSEnumLastStatus`,
+`MPSEnumDisks`, `MPSEnumAbortStatus`, `MPSDiskHandle`, `MPSDiskAccessStatus` and
+`MPSDiskSkipReason` describe the enumeration and the first skipped disk.
+
 ## Scheduling, bindings and lifecycle
 
 There are 64 accepted-request records and up to 32 independent 64 KiB command

@@ -69,6 +69,11 @@
 #define MPI2_CONFIG_EXTPAGETYPE_RAID_CONFIG        0x16
 #define MPI2_SAS_DEVICE_PGAD_FORM_GET_NEXT_HANDLE   0x00000000
 #define MPI2_RAID_PGAD_FORM_GET_NEXT_CONFIGNUM      0x00000000
+#define MPI2_SAS_DEVICE0_ASTATUS_NO_ERRORS         0x00
+/* Firmware reports this for a just-attached SATA disk; mpt3sas treats it as
+ * usable (mpt3sas_scsih.c _scsih_get_sas_device_status) instead of rejecting
+ * the device, and the disk serves I/O from that state. */
+#define MPI2_SAS_DEVICE0_ASTATUS_SATA_NEEDS_INITIALIZATION 0x04
 #define MPI2_SAS_DEVICE0_FLAGS_DEVICE_PRESENT      0x0001
 #define MPI2_SAS_DEVICE0_FLAGS_SATA_FUA_SUPPORTED  0x0010
 #define MPI2_SAS_DEVICE0_FLAGS_UNSUPPORTED_DEVICE  0x0100
