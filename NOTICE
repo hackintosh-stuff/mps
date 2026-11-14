@@ -1,0 +1,81 @@
+MPS third-party source notice
+
+Date: 2026-11-14. Driver version: 0.1.0.
+
+Source inventory:
+
+* MPS/MPI wire definitions and MPSDmaSgl.h SAS2 format: FreeBSD
+  reference/freebsd/sys/dev/mps/mpi/{mpi2.h,mpi2_ioc.h,mpi2_cnfg.h,
+  mpi2_init.h,mpi2_sas.h,mpi2_tool.h}; LSI/Avago BSD-2-Clause terms below.
+* Controller/discovery/WarpDrive behavior and PCI identifiers: FreeBSD
+  reference/freebsd/sys/dev/mps/{mps.c,mps_pci.c,mps_config.c,mps_sas.c,
+  mps_sas_lsi.c,mps_mapping.c,mps_user.c,mpsvar.h,mps_ioctl.h}.
+* macOS IOKit controller, block-device, async, target and native management
+  glue: adapted from the adjacent MPR 0.24.0 source. Its existing transcribed
+  MPI definitions carry Broadcom's three-clause terms, retained below and in
+  the adapted files. No MPR hardware result is transferred to MPS.
+* Linux reference/linux/drivers/scsi/mpt3sas is GPL-2.0 behavior/protocol
+  reference only. No Linux implementation code is incorporated into the kext.
+* MacKernelSDK is a separate compilation dependency under its existing notices.
+  No Apple kernel implementation is copied into this driver.
+
+Acquisition metadata for the local reference trees is retained with the survey
+under _scratch/lsi2308. reference/ is read-only and not part of the build.
+This notice does not assign a new license to other project code.
+
+FreeBSD SAS2 source and wire definitions (BSD-2-Clause)
+
+Copyright (c) 2006-2015 LSI Corp.
+Copyright (c) 2009 Yahoo! Inc.
+Copyright (c) 2011-2015 LSI Corp.
+Copyright (c) 2013-2015 Avago Technologies
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+Retained MPR-derived MPI definitions (Broadcom three-clause terms)
+
+Copyright 2000-2020 Broadcom Inc. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+3. Neither the name of the author nor the names of any co-contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.

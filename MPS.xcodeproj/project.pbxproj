@@ -1,0 +1,236 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A00000000000000000000001 /* MPSController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* MPSController.cpp */; };
+		A00000000000000000000014 /* MPSBlockDev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* MPSBlockDev.cpp */; };
+		A0000000000000000000001A /* MPSAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001B /* MPSAsync.cpp */; };
+		A0000000000000000000001C /* MPSTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000001D /* MPSTarget.cpp */; };
+		D88C5A6E17F1E59E57470C83 /* MPSControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832C93A6086EEF059E657EE0 /* MPSControl.cpp */; };
+		D99147F2F784DF47C4C76053 /* MPSUserClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DD05389583021B84C6740E /* MPSUserClient.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A00000000000000000000002 /* MPSController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MPSController.cpp; sourceTree = "<group>"; };
+		A00000000000000000000003 /* MPSController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSController.h; sourceTree = "<group>"; };
+		A00000000000000000000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A00000000000000000000005 /* MPS.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MPS.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000006 /* MacKernelSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MacKernelSDK; sourceTree = "<group>"; };
+		A00000000000000000000015 /* MPSBlockDev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MPSBlockDev.cpp; sourceTree = "<group>"; };
+		A00000000000000000000016 /* MPSBlockDev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSBlockDev.h; sourceTree = "<group>"; };
+		A00000000000000000000017 /* MPSCompletion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSCompletion.h; sourceTree = "<group>"; };
+		A00000000000000000000018 /* MPSScsi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSScsi.h; sourceTree = "<group>"; };
+		A00000000000000000000019 /* MPSDmaSgl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSDmaSgl.h; sourceTree = "<group>"; };
+		A0000000000000000000001B /* MPSAsync.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MPSAsync.cpp; sourceTree = "<group>"; };
+		A0000000000000000000001D /* MPSTarget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MPSTarget.cpp; sourceTree = "<group>"; };
+		A0000000000000000000001E /* mpi2_target.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPI/mpi2_target.h; sourceTree = "<group>"; };
+		832C93A6086EEF059E657EE0 /* MPSControl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MPSControl.cpp; sourceTree = "<group>"; };
+		22DD05389583021B84C6740E /* MPSUserClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MPSUserClient.cpp; sourceTree = "<group>"; };
+		BC2A4A412B2C055EC18C50B9 /* MPSControlABI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSControlABI.h; sourceTree = "<group>"; };
+		33D078C61BF2476448BD4C57 /* MPSUserClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSUserClient.h; sourceTree = "<group>"; };
+		1BE085F934A86150C3F99B3C /* mpi2_mgmt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPI/mpi2_mgmt.h; sourceTree = "<group>"; };
+		4EF8EAB1BE8C18E855537087 /* mpi2_sas2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPI/mpi2_sas2.h; sourceTree = "<group>"; };
+		B8E460B2BDFA2C6310C9E228 /* MPSPerformance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSPerformance.h; sourceTree = "<group>"; };
+		A00000000000000000000021 /* MPSBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPSBinding.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00000000000000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00000000000000000000008 = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000009 /* MPS */,
+				A00000000000000000000006 /* MacKernelSDK */,
+				A0000000000000000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A00000000000000000000009 /* MPS */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000002 /* MPSController.cpp */,
+				A00000000000000000000003 /* MPSController.h */,
+				A00000000000000000000015 /* MPSBlockDev.cpp */,
+				A00000000000000000000016 /* MPSBlockDev.h */,
+				A00000000000000000000017 /* MPSCompletion.h */,
+				A00000000000000000000018 /* MPSScsi.h */,
+				A00000000000000000000019 /* MPSDmaSgl.h */,
+				A00000000000000000000021 /* MPSBinding.h */,
+				A0000000000000000000001B /* MPSAsync.cpp */,
+				A0000000000000000000001D /* MPSTarget.cpp */,
+				A0000000000000000000001E /* mpi2_target.h */,
+				832C93A6086EEF059E657EE0 /* MPSControl.cpp */,
+				22DD05389583021B84C6740E /* MPSUserClient.cpp */,
+				BC2A4A412B2C055EC18C50B9 /* MPSControlABI.h */,
+				33D078C61BF2476448BD4C57 /* MPSUserClient.h */,
+				1BE085F934A86150C3F99B3C /* mpi2_mgmt.h */,
+				4EF8EAB1BE8C18E855537087 /* mpi2_sas2.h */,
+				B8E460B2BDFA2C6310C9E228 /* MPSPerformance.h */,
+				A00000000000000000000004 /* Info.plist */,
+			);
+			path = MPS;
+			sourceTree = "<group>";
+		};
+		A0000000000000000000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000005 /* MPS.kext */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A0000000000000000000000B /* MPS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000000000000000000000C /* Build configuration list for PBXNativeTarget "MPS" */;
+			buildPhases = (
+				A0000000000000000000000D /* Sources */,
+				A00000000000000000000007 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MPS;
+			productName = MPS;
+			productReference = A00000000000000000000005 /* MPS.kext */;
+			productType = "com.apple.product-type.kernel-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A0000000000000000000000E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = A0000000000000000000000F /* Build configuration list for PBXProject "MPS" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A00000000000000000000008;
+			productRefGroup = A0000000000000000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A0000000000000000000000B /* MPS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A0000000000000000000000D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00000000000000000000001 /* MPSController.cpp in Sources */,
+				A00000000000000000000014 /* MPSBlockDev.cpp in Sources */,
+				A0000000000000000000001A /* MPSAsync.cpp in Sources */,
+				A0000000000000000000001C /* MPSTarget.cpp in Sources */,
+				D88C5A6E17F1E59E57470C83 /* MPSControl.cpp in Sources */,
+				D99147F2F784DF47C4C76053 /* MPSUserClient.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A00000000000000000000010 /* Debug (project) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "-";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(SRCROOT)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(SRCROOT)/MacKernelSDK/Headers";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A00000000000000000000011 /* Release (project) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "-";
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(SRCROOT)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(SRCROOT)/MacKernelSDK/Headers";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		A00000000000000000000012 /* Debug (target) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 0.1.0;
+				INFOPLIST_FILE = "$(SRCROOT)/MPS/Info.plist";
+				MARKETING_VERSION = 0.1.0;
+				MODULE_NAME = com.maz1.MPS;
+				MODULE_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maz1.MPS;
+				PRODUCT_NAME = MPS;
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Debug;
+		};
+		A00000000000000000000013 /* Release (target) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 0.1.0;
+				INFOPLIST_FILE = "$(SRCROOT)/MPS/Info.plist";
+				MARKETING_VERSION = 0.1.0;
+				MODULE_NAME = com.maz1.MPS;
+				MODULE_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maz1.MPS;
+				PRODUCT_NAME = MPS;
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A0000000000000000000000F /* Build configuration list for PBXProject "MPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000010 /* Debug (project) */,
+				A00000000000000000000011 /* Release (project) */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0000000000000000000000C /* Build configuration list for PBXNativeTarget "MPS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000012 /* Debug (target) */,
+				A00000000000000000000013 /* Release (target) */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A0000000000000000000000E /* Project object */;
+}

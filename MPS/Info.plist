@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>MPS</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.maz1.MPS</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>MPS</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>0.1.0</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>MPSController</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.maz1.MPS</string>
+			<key>IOClass</key>
+			<string>MPSController</string>
+			<key>IOPCIPrimaryMatch</key>
+			<string>0x00701000 0x00721000 0x00741000 0x00761000 0x00771000 0x00641000 0x00651000 0x00801000 0x00811000 0x00821000 0x00831000 0x00841000 0x00851000 0x00861000 0x00871000 0x006e1000 0x007e1000</string>
+			<key>IOProviderClass</key>
+			<string>IOPCIDevice</string>
+		</dict>
+	</dict>
+	<key>OSBundleCompatibleVersion</key>
+	<string>0.1.0</string>
+	<key>OSBundleLibraries</key>
+	<dict>
+		<key>com.apple.iokit.IOPCIFamily</key>
+		<string>2.9</string>
+		<key>com.apple.iokit.IOStorageFamily</key>
+		<string>1.0</string>
+		<key>com.apple.kpi.bsd</key>
+		<string>25.6.0</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>25.6.0</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>25.6.0</string>
+		<key>com.apple.kpi.mach</key>
+		<string>25.6.0</string>
+	</dict>
+	<key>OSBundleRequired</key>
+	<string>Root</string>
+</dict>
+</plist>
