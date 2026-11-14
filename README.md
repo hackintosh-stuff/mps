@@ -12,7 +12,10 @@ This port has **no MPS hardware qualification**. Host protocol checks and
 cross-compilation do not prove native link, signature, load, DMA safety on the
 test machine, or data integrity. MPR's historical SAS3008 results do not apply
 to this source. Native build/load and all hardware procedures remain separate
-verification steps. Current build evidence is delivered in `_scratch`.
+verification steps. One SAS2308 with a directly attached SATA SSD has since
+completed native attach and the read/write/flush/TMF/power checks listed below;
+that is single-device evidence, not a qualification. Current build evidence is
+delivered in `_scratch`.
 
 ## Hardware and protocol scope
 
@@ -63,10 +66,16 @@ support; it has no MPS IOMMU hardware qualification.
 - Root/boot-gated native IOUserClient management and `tools/mpsctl.py`, with
   rebuilt SAS2 DMA descriptors rather than caller-provided physical pointers.
 
-These are source capabilities. Every runtime path remains unverified on MPS.
-Block publication fails closed when a trustworthy disk identity cannot be
-established; a model string, transient handle or synthetic SATA address cannot
-authorize a writable medium. The survey does not yet supply the required serial.
+These are source capabilities. Runtime verification on the SAS2308 test machine
+now covers: controller attach and enumeration, block publication of a
+serial-verified SATA disk, raw read integrity matching Linux `mpt3sas` hashes,
+a request-size/queue-depth read matrix over both DMA paths, bounded writes
+verified and restored, filesystem-triggered SYNCHRONIZE CACHE, TMF
+ABORT/LUN/TARGET escalation and IOC-reset recovery, sleep/wake, shutdown,
+maintenance mode and the management refusal matrix, and a sustained read soak.
+Still unverified on MPS: SAS SSP, expanders, enclosures, IR arrays, multi-LUN,
+EEDP/TLR, hotplug, and UNMAP/FUA traffic (no userspace or filesystem caller).
+Evidence reports live in `_scratch/deployment-20261114*/`.
 Detailed implementation and honest gaps are in [DEBUG.md](DEBUG.md) and
 [PLAN.md](PLAN.md). [PROTOCOL.md](PROTOCOL.md) lists the SAS2 conversion
 boundaries. [TESTING.md](TESTING.md) is the hardware test project, with risk,

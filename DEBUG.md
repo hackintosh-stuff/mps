@@ -204,6 +204,15 @@ queue geometry, target identity/generation/probe state, async outstanding/held
 DMA, direct/copied/chained commands, reply batches/index writes, ACK failures,
 sticky protocol faults, reset initiator and power rebuild state.
 
+Counter properties are snapshots, not live totals: `publishTargetProperties()`
+runs on topology, probe and hotplug events only, so adjacent ioreg samples are
+never a valid delta source for a single I/O burst. Gated trace lines
+include `MPS: sync-cache` and `MPS: unmap` with their arguments and result,
+which is how filesystem flush traffic can be evidenced after the fact. The
+whole-disk IOMedia nodes reject `DKIOCSYNCHRONIZECACHE` and `DKIOCUNMAP`
+(ENOTTY), so flush and unmap evidence must come from filesystem activity or a
+kernel harness, and FUA requires a kernel caller.
+
 IRQ diagnostics must reflect actual interrupt actions and descriptors consumed
 there, refreshed after start. They are not aliases for all replies: polling
 can complete a request when no IRQ arrived. Compare IRQ deltas, retired
