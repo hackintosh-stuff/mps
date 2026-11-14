@@ -1032,6 +1032,9 @@ MPSController::synchronizeCacheNow(UInt64 block, UInt64 nblks, bool barrier,
         if (slot->generation != expectedGeneration || !slot->present ||
             slot->offlinePending) status = kIOReturnNoMedia;
     }
+    MPS_DEBUG_LOG("MPS: sync-cache block=%llu nblks=%llu barrier=%d -> 0x%x\n",
+                  (unsigned long long)block, (unsigned long long)nblks,
+                  barrier ? 1 : 0, (unsigned)status);
     IOLockUnlock(fIOLock);
     return status;
 }
@@ -1096,6 +1099,11 @@ MPSController::unmapBlocksNow(const IOBlockStorageDeviceExtent *extents, UInt32 
         slot->offlinePending || mediaRemovalPending())
         status = kIOReturnNoMedia;
 finished:
+    MPS_DEBUG_LOG("MPS: unmap count=%u first=%llu+%llu -> 0x%x\n",
+                  (unsigned)extentsCount,
+                  extentsCount ? (unsigned long long)extents[0].blockStart : 0ULL,
+                  extentsCount ? (unsigned long long)extents[0].blockCount : 0ULL,
+                  (unsigned)status);
     IOLockUnlock(fIOLock);
     return status;
 }
