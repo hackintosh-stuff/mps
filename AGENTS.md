@@ -24,6 +24,13 @@ true of this driver now, not what happened round by round.
   version only. Do not write `at commit <hash>` or round-specific report
   filenames into the body or the sources: the hash goes stale immediately, and
   the round names turn a state document back into a log.
+- **Update the docs when the test ends, not before the next one.** Finishing a
+  verification round is part of that round: before committing or reporting,
+  revise `README.md`, `DEBUG.md` and `PLAN.md` so they state what is true now —
+  newly verified scope, closed gaps, hardware behaviors discovered — and correct
+  every statement the results made stale. Superseded claims ("unverified", "not
+  yet supplied", "fails closed on X") are rewritten or removed, never left
+  standing beside their replacement.
 
 ## Deployment: the ESP and nothing else
 
