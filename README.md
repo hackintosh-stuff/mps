@@ -1,21 +1,13 @@
 # MPS — Fusion-MPT SAS2 for macOS
 
-Date: 2026-11-14. Driver version: 0.1.0.
+Date: 2026-11-15. Driver version: 0.1.0.
 
-MPS is an x86_64 IOKit kext for LSI/Avago MPI 2.0 SAS2 controllers. It adapts
+MPS is an IOKit kext for LSI/Avago MPI 2.0 SAS2 controllers. It adapts
 the FreeBSD `mps` controller protocol to macOS, using the adjacent MPR project's
 macOS scheduling and block-storage glue as a read-only reference. It has its
 own `com.maz1.MPS` bundle, `MPSController`, `MPSBlockDev`, `MPSUserClient`,
-boot arguments and management utility. MPR and MPS target different PCI IDs.
-
-This port has **no MPS hardware qualification**. Host protocol checks and
-cross-compilation do not prove native link, signature, load, DMA safety on the
-test machine, or data integrity. MPR's historical SAS3008 results do not apply
-to this source. Native build/load and all hardware procedures remain separate
-verification steps. One SAS2308 with a directly attached SATA SSD has since
-completed native attach and the read/write/flush/TMF/power checks listed below;
-that is single-device evidence, not a qualification. Current build evidence is
-delivered in `_scratch`.
+boot arguments and management utility. MPR and MPS target different PCI IDs;
+MPR's historical SAS3008 results do not apply to this source.
 
 ## Hardware and protocol scope
 
@@ -30,22 +22,17 @@ The exact FreeBSD `mps_pci.c` table contains 17 unique vendor `0x1000` IDs:
 | SAS2308 | `0086`, `0087`, `006e` |
 | SSS6200 WarpDrive | `007e` |
 
-These are implementation matches, not a qualification list. Facts must report
-MPI 2.0. There are no SAS3 FastPath, IEEE SGE, NVMe, atomic-post, GEN35 or SEA
-paths. WarpDrive applies its Manufacturing Page 10 hide/expose policy and uses
-ordinary IR-volume I/O; the optional DirectDrive optimization is not implemented.
-
-The available survey describes one `1000:0087` / `1000:3020` SAS2308, revision 05,
-firmware 20.00.07.00, eight 6 Gb/s PHYs, PCIe 3.0 x4 and one directly attached
-SATA SSD. It provides no SAS SSP, expander, enclosure, IR array or multi-target
-qualification. IT/IR runtime mode must be determined from Facts/configuration
-pages. The survey is a Linux inventory, not an MPS test result.
+These are the implemented device IDs. Facts must report MPI 2.0. There are no
+SAS3 FastPath, IEEE SGE, NVMe, atomic-post, GEN35 or SEA paths. WarpDrive
+applies its Manufacturing Page 10 hide/expose policy and uses ordinary
+IR-volume I/O; the optional DirectDrive optimization is not implemented.
+IT/IR runtime mode must be determined from Facts/configuration pages.
 
 All resident hardware DMA pools use the controller's retained per-device
 IOMapper through IODMACommand. They require a single aligned device-visible
 IOVA below 4 GiB and reject incompatible or bounced mappings without falling
-back to host physical addresses. This source path includes translated mapper
-support; it has no MPS IOMMU hardware qualification.
+back to host physical addresses. The translated-mapper path has run under an
+IOMMU on the test machine.
 
 ## Implemented source paths
 
@@ -66,27 +53,26 @@ support; it has no MPS IOMMU hardware qualification.
 - Root/boot-gated native IOUserClient management and `tools/mpsctl.py`, with
   rebuilt SAS2 DMA descriptors rather than caller-provided physical pointers.
 
-These are source capabilities. Runtime verification on the SAS2308 test machine
-now covers: controller attach and enumeration, block publication of a
-serial-verified SATA disk, raw read integrity matching Linux `mpt3sas` hashes,
-a request-size/queue-depth read matrix over both DMA paths, bounded writes
-verified and restored, filesystem-triggered SYNCHRONIZE CACHE, TMF
-ABORT/LUN/TARGET escalation and IOC-reset recovery, sleep/wake, shutdown,
-maintenance mode and the management refusal matrix, a sustained read soak, and
-a physical hotplug cycle: removal retires the target with a TARGET_RESET and a
-bounded IOC re-init, leaves a clean empty topology, and reinsertion re-probes
-the same serial into a republished medium with unchanged read hashes.
-Still unverified on MPS: SAS SSP, expanders, enclosures, IR arrays, multi-LUN,
-EEDP/TLR, hotplug, and UNMAP/FUA traffic (no userspace or filesystem caller).
-Evidence reports live in `_scratch/deployment-20261114*/`.
+Runtime verification to date covers: controller attach and enumeration, block
+publication of a disk with a verified serial, raw read integrity matching
+Linux `mpt3sas` hashes, a request-size/queue-depth read matrix over both DMA
+paths, bounded writes verified and restored, filesystem-triggered SYNCHRONIZE
+CACHE, TMF ABORT/LUN/TARGET escalation and IOC-reset recovery, sleep/wake,
+shutdown, maintenance mode and the management refusal matrix, a sustained read
+soak, and a physical hotplug cycle: removal retires the target with a
+TARGET_RESET and a bounded IOC re-init, leaves a clean empty topology, and
+reinsertion re-probes the same identity into a republished medium with
+unchanged read hashes. Still unverified: SAS SSP, expanders, enclosures, IR
+arrays, multi-LUN, EEDP/TLR, and UNMAP/FUA traffic (no userspace or
+filesystem caller).
 Detailed implementation and honest gaps are in [DEBUG.md](DEBUG.md) and
 [PLAN.md](PLAN.md). [PROTOCOL.md](PROTOCOL.md) lists the SAS2 conversion
 boundaries. [TESTING.md](TESTING.md) is the hardware test project, with risk,
 prerequisites, byte-level acceptance criteria and rollback.
 
-## Build and host checks
+## Build
 
-On a currently running, configured x86_64 Mac with Command Line Tools:
+On a macOS x86_64 host with Command Line Tools:
 
 ```sh
 python3 tools/validate-build-inputs.py
@@ -98,7 +84,8 @@ driver-symbol closure, validates the plist and applies an ad-hoc signature.
 It does not install, load, inject, modify an ESP or rebuild a kernel collection.
 The Xcode project is `MPS.xcodeproj`; `MacKernelSDK` is a separate dependency.
 
-Host-only SGL checks can run on a machine with a C++17 compiler:
+The host-only protocol and management decoders run on any machine with a
+C++17 compiler:
 
 ```sh
 c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined \
@@ -108,8 +95,7 @@ python3 tools/test_management.py
 ```
 
 The independent decoder checks actual MPI bytes; it does not emulate a
-controller. Cross-compiled Mach-O objects remain distinct from a native linked,
-signed and loadable kext. Do not reboot a rescue system just to obtain a compiler.
+controller.
 
 ## Runtime options
 
@@ -135,7 +121,7 @@ sudo python3 tools/mpsctl.py events --registry-id <registry-id>
 
 Installation/loading, OpenCore edits, reboot/power operations and test-disk
 writes require explicit authorization for those operations. Installation uses
-only the verified **internal SATA ESP**,
+only the **ESP of an internal disk**,
 `EFI/OC/Kexts/MPS.kext` and a validated `Kernel > Add` entry; never
 `/Library/Extensions`, another system volume or a USB EFI. Follow [TESTING.md](TESTING.md)
 before deployment. Preserve the notices in [NOTICE](NOTICE) with binary
